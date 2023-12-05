@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import '../widgets/direction_control.dart';
+import '../widgets/velocity_control.dart';
+// Importa otros widgets personalizados que crees.
 
 class ControlScreen extends StatelessWidget {
   const ControlScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Implementar UI basada en la Pantalla 3 del diseño
     return Scaffold(
       appBar: AppBar(
         title: const Text('Control Robot'),
       ),
-      body: const Center(
-        child: Text('Control Screen Placeholder'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          DirectionControl(onDirectionSelected: (String direction) {  },),
+          VelocityControl(),
+          // Añade aquí otros controles necesarios.
+        ],
       ),
     );
   }
