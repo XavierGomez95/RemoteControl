@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Control RemoteR',
+      title: 'BOXY Autonomous robot',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

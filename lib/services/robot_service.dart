@@ -1,7 +1,9 @@
+import 'package:remotecontrol/models/Position.dart';
+
 import '../models/robot.dart';
 
 class RobotService {
-  final Robot robot = Robot();
+  final Robot robot = Robot(position: Position(latitude: 0.0,longitude: 0.0));
 
   void updateTemperature(double newTemp) {
     robot.temperature = newTemp;
