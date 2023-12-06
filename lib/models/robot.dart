@@ -13,4 +13,10 @@ class Robot {
     this.rotations = 0,
     required this.position, // Inicializa con un valor predeterminado si es necesario
   });
+
+  set velocity(double velocity) {}
+
+  set lightOn(bool lightOn) {}
+
+  set packetColor(String packetColor) {}
 }

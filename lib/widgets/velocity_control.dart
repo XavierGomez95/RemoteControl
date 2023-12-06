@@ -15,6 +15,7 @@ class _VelocityControlState extends State<VelocityControl> {
   void increaseVelocity() {
     setState(() {
       velocity++;
+
     });
   }
 
@@ -30,11 +31,8 @@ class _VelocityControlState extends State<VelocityControl> {
   Widget build(BuildContext context) {
     // Define el estilo del botón aquí para reutilizarlo en ambos botones
     final buttonStyle = ElevatedButton.styleFrom(
-      primary: Colors.blueGrey[600], // Asume esto es el color de tus botones de dirección
-      onPrimary: Colors.white, // Color del texto/icono
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100), // Bordes redondeados
-      ),
+      foregroundColor: Colors.white, backgroundColor: Colors.blueGrey[600], // Color del texto/icono
+      shape: const CircleBorder(),
       padding: EdgeInsets.zero, // Elimina el padding predeterminado
     );
 
