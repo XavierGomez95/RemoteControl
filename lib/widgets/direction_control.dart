@@ -16,7 +16,7 @@ class DirectionControl extends StatelessWidget {
     // Estilo para los botones
     final buttonStyle = ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
-      primary: Colors.blueGrey[600], // Color del ícono
+      backgroundColor: Colors.blueGrey[600], // Color del ícono
       elevation: 4, // Sombra del botón (una sombra más sutil)
       shape: CircleBorder(), // Esto creará un borde circular para el botón
       padding: EdgeInsets.all(20), // Añade un poco de padding si quieres que los botones sean más grandes
