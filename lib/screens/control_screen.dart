@@ -8,6 +8,7 @@ class ControlScreen extends StatelessWidget {
   void _handleDirectionSelected(String direction) {
     // Implementación de la selección de dirección
     print('Direction selected: $direction');
+
   }
 
   @override
