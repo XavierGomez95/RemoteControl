@@ -17,24 +17,25 @@ class ControlScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Control Robot'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: DirectionControl(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DirectionControl(
                 onDirectionSelected: _handleDirectionSelected,
                 buttonSize: 130, // Tamaño personalizado para los botones
               ),
-            ),
-            Expanded(
-              child: VelocityControl(
+              SizedBox(
+                  height: 16
+              ), // Espacio entre los controles
+              VelocityControl(
                 sliderHeight: 40, // Altura personalizada para el control deslizante
               ),
-            ),
-            // Añade aquí otros controles si son necesarios
-          ],
+              // Añade aquí otros controles si son necesarios
+            ],
+          ),
         ),
       ),
     );
