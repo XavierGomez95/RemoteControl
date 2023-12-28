@@ -1,23 +1,21 @@
-import socket
+import bluetooth
 
-# Configura el servidor de socket
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = socket.gethostname()  # Obtén la dirección local de la máquina
-print(host)
-port = 12345                 # Selecciona un puerto para tu servicio
+# Configura el servidor Bluetooth
+server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+port = 1  # Puedes seleccionar cualquier puerto disponible
 
-# Enlaza al host y al puerto
-server_socket.bind((host, port))
+# Enlaza al puerto
+server_socket.bind(("", port))
 
 # Comienza a escuchar conexiones
-server_socket.listen(5)
-print(f"Listening on {host}:{port}")
+server_socket.listen(1)
+print(f"Listening on RFCOMM channel {port}")
 
 try:
     while True:  # Bucle principal para aceptar conexiones
         print("Waiting for a connection...")
-        client_socket, addr = server_socket.accept()
-        print(f"Got a connection from {addr}")
+        client_socket, client_info = server_socket.accept()
+        print(f"Got a connection from {client_info}")
 
         try:
             # Bucle para recibir datos del cliente
@@ -43,4 +41,3 @@ finally:
     # Limpieza del servidor
     server_socket.close()
     print("Server closed")
-

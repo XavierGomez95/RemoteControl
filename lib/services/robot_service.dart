@@ -1,29 +1,20 @@
 import '../models/robot.dart';
-import 'connection.dart';
+import 'BluetoothConnection.dart';
 import 'package:remotecontrol/models/Position.dart';
 
 class RobotService {
 
-
   final Robot robot = Robot(position: Position(latitude: 0.0, longitude: 0.0));
-
-
-  final Connection connection = Connection();
+  final BluetoothConnection connection = BluetoothConnection();
 
   Future<void> initializeConnection() async {
     try {
-      await connection.connect('127.0.0.1', 12345);
-      print('Conexión establecida con el robot.');
+      await connection.connectToDevice('doro');
+      print('Conexión Bluetooth establecida con el robot.');
     } catch (e) {
-      print('Error al establecer la conexión: $e');
+      print('Error al establecer la conexión Bluetooth: $e');
     }
   }
-
-  void disconnect() {
-    connection.dispose();
-    print('Conexión cerrada.');
-  }
-
   void sendCommand(String command) {
     connection.send(command);
     print('Comando enviado: $command');

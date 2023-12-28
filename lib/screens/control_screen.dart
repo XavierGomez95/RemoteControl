@@ -12,6 +12,7 @@ class ControlScreen extends StatelessWidget {
   void _handleDirectionSelected(String direction) {
     _sendMessageToRaspberry(direction);
     print('Direction selected: $direction');
+
   }
 
   void _handleSpeedSelected(String direction) {
