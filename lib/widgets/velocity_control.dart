@@ -43,7 +43,10 @@ class _VelocityControlState extends State<VelocityControl> {
 
     return Column(
       children: [
-        const Text('Velocity', style: TextStyle(fontSize: 20)),
+        const Text('Speed', style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        )),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

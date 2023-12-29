@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:remotecontrol/widgets/directionButton.dart';
 
-class DirectionControl extends StatelessWidget {
+class DirectionControl extends StatefulWidget {
   final Function(String direction) onDirectionSelected;
   final double buttonSize;
+  final String returnText;
+  final String bullText;
 
-  const DirectionControl({
+  DirectionControl({
     super.key,
     required this.onDirectionSelected,
+    this.returnText = '180°',
+    this.bullText = 'Toro mecánico',
     this.buttonSize = 60.0, // Tamaño de los botones
   });
+
+  @override
+  State<DirectionControl> createState() => _DirectionControlState();
+}
+
+class _DirectionControlState extends State<DirectionControl> {
+  bool bullState = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,40 +35,64 @@ class DirectionControl extends StatelessWidget {
 
 
     return Padding(
-      padding: const EdgeInsets.all(16.0), // Espacio alrededor de la grilla de botones
+      padding: const EdgeInsets.all(4.0), // Espacio alrededor de la grilla de botones
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Botón de arriba
-
+          // Botón de subir y bajar el toro mecánico
+          Transform.rotate(
+            angle: -1.5708, // 0.5 pi radianes
+            child: DirectionButton(
+              icon: Icons.compare_arrows,
+              onPressed: () {
+                // Cambia el estado de bullState y llama a la función correspondiente
+                bullState = !bullState; // Cambia el estado a su contrario
+                widget.onDirectionSelected(bullState ? 'UP' : 'DOWN');
+              },
+              size: widget.buttonSize,
+              style: buttonStyle,
+            ),
+          ),
+          Text(
+            widget.bullText,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ), // Estilo del texto (ajusta según sea necesario)
+          ),
           // Fila del medio con botones izquierdo y derecho
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               DirectionButton(
                 icon: Icons.arrow_back,
-                onPressed: () => onDirectionSelected('left'),
-                size: buttonSize,
+                onPressed: () => widget.onDirectionSelected('left'),
+                size: widget.buttonSize,
                 style: buttonStyle,
               ),
-              SizedBox(width: buttonSize), // Espacio para el botón central
+              SizedBox(width: widget.buttonSize), // Espacio para el botón central
               DirectionButton(
                 icon: Icons.arrow_forward,
-                onPressed: () => onDirectionSelected('right'),
-                size: buttonSize,
+                onPressed: () => widget.onDirectionSelected('right'),
+                size: widget.buttonSize,
                 style: buttonStyle,
               ),
             ],
           ),
           // Botón de abajo
-        Transform.rotate(
-            angle: -1.5708, // Radianes equivalentes a 90 grados en sentido antihorario
-            child: DirectionButton(
-              icon: Icons.compare_arrows,
-              onPressed: () => onDirectionSelected('down'),
-              size: buttonSize,
-              style: buttonStyle,
-            ),
+       // Radianes equivalentes a 90 grados en sentido antihorario
+          DirectionButton(
+            icon: Icons.u_turn_left,
+            onPressed: () => widget.onDirectionSelected('180 degrees'),
+            size: widget.buttonSize,
+            style: buttonStyle,
+          ),
+          Text(
+            widget.returnText,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ), // Estilo del texto (ajusta según sea necesario)
           ),
         ],
       ),

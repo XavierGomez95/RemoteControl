@@ -47,16 +47,10 @@ class ControlScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                  height: 64,
-              ),
               DirectionControl(
                 onDirectionSelected: _handleDirectionSelected,
                 buttonSize: 130, // Tamaño personalizado para los botones
-              ),
-              SizedBox(
-                  height: 24
-              ), // Espacio entre los controles
+              ),// Espacio entre los controles
               VelocityControl(
                 onSpeedSelected: _handleSpeedSelected,
                 sliderHeight: 40, // Altura personalizada para el control deslizante
