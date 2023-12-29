@@ -21,9 +21,18 @@ class ControlScreen extends StatelessWidget {
   }
 
   void _sendMessageToRaspberry(String message) async {
-    Socket socket = await Socket.connect('192.168.1.126', 8000);
-    socket.write(message);
-    socket.close();
+    try {
+      Socket socket = await Socket.connect('192.168.1.126', 8000);
+      socket.write(message);
+      socket.close();
+    } catch (e) {
+      print(e);
+
+      SnackBar(
+          content: Text('Error connecting to the server: $e'),
+      );
+
+    }
   }
 
   @override
@@ -38,12 +47,15 @@ class ControlScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                  height: 64,
+              ),
               DirectionControl(
                 onDirectionSelected: _handleDirectionSelected,
                 buttonSize: 130, // Tamaño personalizado para los botones
               ),
               SizedBox(
-                  height: 16
+                  height: 24
               ), // Espacio entre los controles
               VelocityControl(
                 onSpeedSelected: _handleSpeedSelected,

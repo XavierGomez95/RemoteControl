@@ -29,12 +29,7 @@ class DirectionControl extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Botón de arriba
-          DirectionButton(
-            icon: Icons.arrow_upward,
-            onPressed: () => onDirectionSelected('up'),
-            size: buttonSize,
-            style: buttonStyle,
-          ),
+
           // Fila del medio con botones izquierdo y derecho
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -55,11 +50,14 @@ class DirectionControl extends StatelessWidget {
             ],
           ),
           // Botón de abajo
-          DirectionButton(
-            icon: Icons.arrow_downward,
-            onPressed: () => onDirectionSelected('down'),
-            size: buttonSize,
-            style: buttonStyle,
+        Transform.rotate(
+            angle: -1.5708, // Radianes equivalentes a 90 grados en sentido antihorario
+            child: DirectionButton(
+              icon: Icons.compare_arrows,
+              onPressed: () => onDirectionSelected('down'),
+              size: buttonSize,
+              style: buttonStyle,
+            ),
           ),
         ],
       ),
