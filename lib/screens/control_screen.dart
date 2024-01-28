@@ -12,17 +12,16 @@ class ControlScreen extends StatelessWidget {
   void _handleDirectionSelected(String direction) {
     _sendMessageToRaspberry(direction);
     print('Direction selected: $direction');
-
   }
 
-  void _handleSpeedSelected(String direction) {
-    _sendMessageToRaspberry(direction);
-    print('Direction selected: $direction');
+  void _handleSpeedSelected(String speed) {
+    _sendMessageToRaspberry(speed);
+    print('Speed selected: $speed');
   }
 
   void _sendMessageToRaspberry(String message) async {
     try {
-      Socket socket = await Socket.connect('192.168.1.126', 8000);
+      Socket socket = await Socket.connect('192.168.1.126', 8080);
       socket.write(message);
       socket.close();
     } catch (e) {

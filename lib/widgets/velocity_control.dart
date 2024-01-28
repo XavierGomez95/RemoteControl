@@ -18,8 +18,10 @@ class _VelocityControlState extends State<VelocityControl> {
 
   void increaseVelocity() {
     setState(() {
-      velocity++;
-      widget.onSpeedSelected(velocity.toString());
+      if (velocity < 7) {
+        velocity++;
+        widget.onSpeedSelected(velocity.toString());
+      }
     });
   }
 
