@@ -80,7 +80,7 @@ class _DirectionControlState extends State<DirectionControl> {
                 child: ListTile(
                   leading: Icon(Icons.sync_rounded, color: Colors.green),
                   title: const Text('Rotations'),
-                  subtitle: Text('RPM: $velocity'),
+                  subtitle: Text('${velocity.toStringAsFixed(0)} RMP'),
                 ),
               ),
               SizedBox(height: 16.0),
@@ -88,7 +88,7 @@ class _DirectionControlState extends State<DirectionControl> {
                 child: ListTile(
                   leading: Icon(Icons.linear_scale, color: Colors.red),
                   title: const Text('Distance'),
-                  subtitle: Text('Meters: ${_distanciaMetros.toStringAsFixed(2)}'),
+                  subtitle: Text('${_distanciaMetros.toStringAsFixed(3)} meters'),
                 ),
               ),
               SizedBox(height: 32.0),

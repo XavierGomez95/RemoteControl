@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'robot_details_screen.dart';
 import 'control_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -49,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     ),
-    RobotDetailsScreen(),
     ControlScreen(),
   ];
 
@@ -76,11 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.home),
             label: 'Home',
             backgroundColor: Colors.green, // Color de fondo para el elemento seleccionado
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_remote),
-            label: 'Details',
-            backgroundColor: Colors.green // Color de fondo para el elemento seleccionado
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.control_camera),
