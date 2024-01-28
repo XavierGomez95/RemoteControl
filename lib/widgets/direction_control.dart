@@ -1,18 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:remotecontrol/velocity_controller.dart';
 import 'package:remotecontrol/widgets/directionButton.dart';
+
+final GlobalKey<_DirectionControlState> directionControlKey = GlobalKey();
 
 class DirectionControl extends StatefulWidget {
   final Function(String direction) onDirectionSelected;
   final double buttonSize;
-  final String returnText;
-  final String bullText;
+  final VelocityController velocityController;
 
   DirectionControl({
     super.key,
     required this.onDirectionSelected,
-    this.returnText = '180°',
-    this.bullText = 'Toro mecánico',
-    this.buttonSize = 60.0, // Tamaño de los botones
+    this.buttonSize = 60.0,
+    required this.velocityController, // Tamaño de los botones
   });
 
   @override
@@ -20,10 +23,39 @@ class DirectionControl extends StatefulWidget {
 }
 
 class _DirectionControlState extends State<DirectionControl> {
-  bool bullState = false;
+  final Stopwatch _stopwatch = Stopwatch()..start();
+  double _ultimaActualizacion = 0.0;
+  double _distanciaMetros = 0.0;
+
+  double get velocity => widget.velocityController.value;
+
+  // Método para calcular la distancia en metros
+  double calcularDistanciaEnMetros(double tiempoTranscurrido) {
+    // La relación es 21.5 cm por cada RPM
+    const relacionCmPorRPM = 21.5;
+    return (velocity * relacionCmPorRPM * tiempoTranscurrido) / (100 * 60); // Convertir de cm a metros
+  }
+
+  void _actualizarDistancia() {
+    double tiempoTranscurrido = _stopwatch.elapsed.inSeconds.toDouble();
+    setState(() {
+      _distanciaMetros += calcularDistanciaEnMetros(tiempoTranscurrido - _ultimaActualizacion);
+      _ultimaActualizacion = tiempoTranscurrido;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Configura un temporizador para actualizar la distancia cada segundo
+    Timer.periodic(const Duration(seconds: 1), (_) {
+      _actualizarDistancia();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.velocityController.value);
     // Estilo para los botones
     final buttonStyle = ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
@@ -34,68 +66,55 @@ class _DirectionControlState extends State<DirectionControl> {
     );
 
 
-    return Padding(
-      padding: const EdgeInsets.all(4.0), // Espacio alrededor de la grilla de botones
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Botón de subir y bajar el toro mecánico
-          Transform.rotate(
-            angle: -1.5708, // 0.5 pi radianes
-            child: DirectionButton(
-              icon: Icons.compare_arrows,
-              onPressed: () {
-                // Cambia el estado de bullState y llama a la función correspondiente
-                bullState = !bullState; // Cambia el estado a su contrario
-                widget.onDirectionSelected(bullState ? 'UP' : 'DOWN');
-              },
-              size: widget.buttonSize,
-              style: buttonStyle,
-            ),
-          ),
-          Text(
-            widget.bullText,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ), // Estilo del texto (ajusta según sea necesario)
-          ),
-          // Fila del medio con botones izquierdo y derecho
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return ValueListenableBuilder<double>(
+      valueListenable: widget.velocityController,
+      builder: (context, velocity, _) {
+
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              DirectionButton(
-                icon: Icons.arrow_back,
-                onPressed: () => widget.onDirectionSelected('left'),
-                size: widget.buttonSize,
-                style: buttonStyle,
+              // Resto del código...
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.sync_rounded, color: Colors.green),
+                  title: const Text('Rotations'),
+                  subtitle: Text('RPM: $velocity'),
+                ),
               ),
-              SizedBox(width: widget.buttonSize), // Espacio para el botón central
-              DirectionButton(
-                icon: Icons.arrow_forward,
-                onPressed: () => widget.onDirectionSelected('right'),
-                size: widget.buttonSize,
-                style: buttonStyle,
+              SizedBox(height: 16.0),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.linear_scale, color: Colors.red),
+                  title: const Text('Distance'),
+                  subtitle: Text('Meters: ${_distanciaMetros.toStringAsFixed(2)}'),
+                ),
               ),
+              SizedBox(height: 32.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DirectionButton(
+                    icon: Icons.arrow_back,
+                    onPressed: () => widget.onDirectionSelected('left'),
+                    size: widget.buttonSize,
+                    style: buttonStyle,
+                  ),
+                  SizedBox(width: widget.buttonSize), // Espacio para el botón central
+                  DirectionButton(
+                    icon: Icons.arrow_forward,
+                    onPressed: () => widget.onDirectionSelected('right'),
+                    size: widget.buttonSize,
+                    style: buttonStyle,
+                  ),
+                ],
+              ),
+              // Resto del código...
             ],
           ),
-          // Botón de abajo
-       // Radianes equivalentes a 90 grados en sentido antihorario
-          DirectionButton(
-            icon: Icons.u_turn_left,
-            onPressed: () => widget.onDirectionSelected('180 degrees'),
-            size: widget.buttonSize,
-            style: buttonStyle,
-          ),
-          Text(
-            widget.returnText,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ), // Estilo del texto (ajusta según sea necesario)
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

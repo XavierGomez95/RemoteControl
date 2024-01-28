@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../velocity_controller.dart';
+
 class VelocityControl extends StatefulWidget {
   final double sliderHeight;
   final Function(String speed) onSpeedSelected;
+  final VelocityController velocityController;
 
   const VelocityControl({
     super.key,
     this.sliderHeight = 40.0,
-    required this.onSpeedSelected});
+    required this.onSpeedSelected,
+    required this.velocityController,
+  });
 
   @override
   _VelocityControlState createState() => _VelocityControlState();

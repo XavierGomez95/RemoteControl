@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import '../velocity_controller.dart';
 import '../widgets/direction_control.dart';
 import '../widgets/velocity_control.dart';
 import 'dart:io';
 
+class ControlScreen extends StatefulWidget {
+  ControlScreen({super.key});
 
+  @override
+  _ControlScreenState createState() => _ControlScreenState();
+}
 
-
-class ControlScreen extends StatelessWidget {
-  const ControlScreen({super.key});
+class _ControlScreenState extends State<ControlScreen> {
+  double velocity = 0.0;
+  VelocityController myVelocityController = VelocityController(0.0);
 
   void _handleDirectionSelected(String direction) {
     _sendMessageToRaspberry(direction);
@@ -17,20 +23,23 @@ class ControlScreen extends StatelessWidget {
   void _handleSpeedSelected(String speed) {
     _sendMessageToRaspberry(speed);
     print('Speed selected: $speed');
+    velocity = double.parse(speed);
+    myVelocityController.updateVelocity(velocity);
   }
 
   void _sendMessageToRaspberry(String message) async {
     try {
-      Socket socket = await Socket.connect('192.168.1.126', 8080);
+      Socket socket = await Socket.connect('192.168.1.126', 8000);
       socket.write(message);
       socket.close();
     } catch (e) {
       print(e);
 
-      SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text('Error connecting to the server: $e'),
+        ),
       );
-
     }
   }
 
@@ -48,13 +57,15 @@ class ControlScreen extends StatelessWidget {
             children: [
               DirectionControl(
                 onDirectionSelected: _handleDirectionSelected,
-                buttonSize: 130, // Tamaño personalizado para los botones
-              ),// Espacio entre los controles
+                velocityController: myVelocityController,
+                buttonSize: 130,
+              ),
               VelocityControl(
                 onSpeedSelected: _handleSpeedSelected,
-                sliderHeight: 40, // Altura personalizada para el control deslizante
+                sliderHeight: 40,
+                velocityController: myVelocityController,
               ),
-              // Añade aquí otros controles si son necesarios
+              // Add other controls here if needed
             ],
           ),
         ),
